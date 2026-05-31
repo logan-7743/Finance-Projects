@@ -31,7 +31,7 @@ export function SymbolSearch({
     <form className="flex w-full gap-2 sm:max-w-sm" onSubmit={handleSubmit}>
       <Input
         aria-label="Ticker symbol"
-        placeholder="AAPL"
+        placeholder="AAPL or BTC-USD"
         value={value}
         onChange={(event) => setValue(event.target.value.toUpperCase())}
         disabled={disabled}

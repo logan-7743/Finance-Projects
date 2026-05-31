@@ -1,0 +1,16 @@
+---
+description: Keep git workspace and remote sync visible
+alwaysApply: true
+---
+
+# Repository Sync Hygiene
+
+When this workspace is a git repo with a configured remote:
+
+- At the end of substantive work, check `git status` and report whether there are uncommitted changes.
+- If changes exist, explicitly ask whether to commit and push now so the remote stays current.
+- Use concise commit messages that describe why the change was made.
+- Never commit `.env`, credentials, or other secrets.
+- Never push unless the user explicitly approves push for that change.
+
+This rule exists so "keep it up to date" is handled consistently without silent commits or pushes.

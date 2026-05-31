@@ -1,15 +1,19 @@
-"""Performance metrics for strategy evaluation.
+"""Performance and statistical metrics for strategy evaluation."""
 
-TODO (Phase 1): Implement metrics on top of a completed backtest equity curve.
+from quant.metrics.performance import PerformanceSummary, summarize_equity_curve, trade_expectancy
+from quant.metrics.statistics import (
+    BootstrapInterval,
+    bootstrap_mean_interval,
+    permutation_significance,
+    probabilistic_sharpe_ratio,
+)
 
-Required metrics (from 10-quant-rigor.mdc):
-- Sharpe ratio (annualized, net-of-cost)
-- Maximum drawdown
-- Calmar ratio (annualized return / max drawdown)
-- Win rate
-- Average trade P&L (net of costs)
-- Market exposure (% of time in positions)
-- Profit factor
-
-All metrics must be computed on net-of-cost returns.
-"""
+__all__ = [
+    "BootstrapInterval",
+    "PerformanceSummary",
+    "bootstrap_mean_interval",
+    "permutation_significance",
+    "probabilistic_sharpe_ratio",
+    "summarize_equity_curve",
+    "trade_expectancy",
+]

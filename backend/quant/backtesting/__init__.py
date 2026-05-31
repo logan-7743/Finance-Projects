@@ -1,11 +1,43 @@
-"""Backtesting engine — TODO: implement in Phase 1.
+"""Backtesting package."""
 
-The engine will:
-1. Feed historical OHLCV data bar-by-bar to a strategy's generate_signals().
-2. Convert signals to simulated orders using the cost models in quant.risk.
-3. Track positions, cash, and equity curve.
-4. Compute performance metrics via quant.metrics.
+from quant.backtesting.indicator_rules import (
+    BacktestConfig,
+    BacktestMetrics,
+    BacktestResult,
+    BacktestRule,
+    ExecutedTrade,
+    run_indicator_rules_backtest,
+)
+from quant.backtesting.engine import (
+    MultiAssetBacktestConfig,
+    MultiAssetBacktestResult,
+    MultiAssetMetrics,
+    MultiAssetTrade,
+    run_multi_asset_backtest,
+)
+from quant.backtesting.strategy_engine import (
+    StrategyBacktestConfig,
+    StrategyBacktestMetrics,
+    StrategyBacktestResult,
+    StrategyExecutedTrade,
+    run_strategy_backtest,
+)
 
-IMPORTANT: All backtests must be net-of-cost. See quant/risk/costs.py for the
-cost model interface and 10-quant-rigor.mdc for requirements.
-"""
+__all__ = [
+    "BacktestConfig",
+    "BacktestMetrics",
+    "BacktestResult",
+    "BacktestRule",
+    "ExecutedTrade",
+    "run_indicator_rules_backtest",
+    "MultiAssetBacktestConfig",
+    "MultiAssetBacktestResult",
+    "MultiAssetMetrics",
+    "MultiAssetTrade",
+    "run_multi_asset_backtest",
+    "StrategyBacktestConfig",
+    "StrategyBacktestMetrics",
+    "StrategyBacktestResult",
+    "StrategyExecutedTrade",
+    "run_strategy_backtest",
+]

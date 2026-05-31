@@ -63,6 +63,54 @@ include = ["app*", "quant*"]
 
 ---
 
+## 2026-05-31 — Crypto symbols were error-prone for Yahoo format
+
+**Symptom:** Entering common crypto shorthand (`BTC`, `ETH/USD`, `SOLUSD`) often failed unless users knew Yahoo's exact `BASE-USD` symbol format.
+
+**Root cause:** Backend accepted symbols verbatim and did not normalize common crypto input formats.
+
+**Fix:** Added backend symbol normalization for known crypto bases, mapping shorthand inputs to Yahoo format (`BTC-USD`, etc.), and added frontend quick crypto presets.
+
+**Dead ends (do not retry):** Do not rely on users always typing Yahoo-specific crypto ticker formatting manually.
+
+---
+
+## 2026-05-31 — React lint rule blocked localStorage hydration via effect
+
+**Symptom:** Frontend lint failed with `react-hooks/set-state-in-effect` when loading cached indicator configs by calling `setIndicatorConfigs(...)` inside `useEffect`.
+
+**Root cause:** The new React lint rule discourages synchronous state-setting in effect bodies when the value can be derived during initialization.
+
+**Fix:** Switched to lazy `useState` initialization that reads localStorage once on component init, plus safe `window` guards in cache helpers for SSR safety.
+
+**Dead ends (do not retry):** Do not hydrate simple localStorage-backed state by immediately setting state in a mount effect when lazy initialization is viable.
+
+---
+
+## 2026-05-31 — lightweight-charts custom price scale crash in oscillator rendering
+
+**Symptom:** Dashboard crashed with `Trying to apply price scale options with incorrect ID` when indicators with oscillator panes (e.g., OBV) were active.
+
+**Root cause:** `priceScale(...).applyOptions(...)` ran before any series had been added with that custom `priceScaleId`, so the chart model rejected the unknown scale ID.
+
+**Fix:** Add indicator series first (which creates the scale), then apply scale options. Use stable per-indicator oscillator scale IDs.
+
+**Dead ends (do not retry):** Do not apply options to arbitrary custom scale IDs before a bound series exists.
+
+---
+
+## 2026-05-31 — Core test collection could fail when optional market-data deps are missing
+
+**Symptom:** Test collection failed with `ModuleNotFoundError: No module named 'yfinance'` even when running tests that do not use the yfinance data source.
+
+**Root cause:** `quant.data.__init__` eagerly imported `YFinanceSource`, forcing `yfinance` to be installed just to import base data types like `OHLCVBar`.
+
+**Fix:** Made `YFinanceSource` import optional in `quant.data.__init__` via `try/except ModuleNotFoundError`, allowing core quant modules/tests to import without yfinance in minimal environments.
+
+**Dead ends (do not retry):** Do not make package-level imports eagerly depend on optional provider SDKs unless absolutely necessary.
+
+---
+
 ## Template
 
 ```

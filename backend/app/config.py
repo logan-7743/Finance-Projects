@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     alpaca_api_key: str | None = None
     alpaca_secret_key: str | None = None
     alpaca_base_url: str = "https://paper-api.alpaca.markets/v2"
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-2.5-flash"
+    perplexity_api_key: str | None = None
+    perplexity_model: str = "sonar-pro"
 
     @field_validator("allowed_origins", mode="before")
     @classmethod

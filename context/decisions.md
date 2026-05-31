@@ -67,3 +67,63 @@ Cloud Run with a warm instance eliminates all of the above. GCP Cloud Scheduler 
 **Why:** The project uses yfinance/Yahoo in Phase 0, which is rate-limited and unsuitable for frequent automatic fetches. Cache-first loading preserves responsiveness, lowers request volume, and aligns with local-dev reliability.
 
 **Implementation detail:** Manual refresh requests incremental history via a `since` cursor and merges new bars client-side, rather than re-downloading full history each time.
+
+---
+
+## 2026-05-31 — Technical indicators computed server-side in quant layer
+
+**Decision:** Compute market dashboard technical indicators in backend `quant/indicators/` and return indicator series through `/api/market/history`, instead of calculating indicators in the frontend.
+
+**Why:** Keeps quant math in one place, aligns with architecture boundaries (routers thin, frontend display-only), and makes indicator logic reusable for future backtesting/strategy workflows. This also centralizes parameter validation and avoids divergent formulas between UI and quant engine.
+
+**Implementation detail:** For incremental refresh requests with `since`, backend estimates and fetches a warm-up window before computing indicators, then trims output back to the visible window to preserve indicator correctness.
+
+---
+
+## 2026-05-31 — Backtesting v1 uses explicit indicator-rule definitions via API
+
+**Decision:** Implement first backtesting UI/API as explicit indicator-rule definitions (left series, operator, right series/constant) rather than introducing a full strategy DSL or auto-generated strategy classes.
+
+**Why:** Fastest path to honest diagnostics for many indicator combinations while keeping quant math in backend Python and frontend as control surface. It allows early idea triage and metric reporting without over-investing in architecture before validation workflows mature.
+
+**Implementation detail:** `POST /api/market/backtest` receives indicator configs + entry/exit rules + initial capital, runs a long-only net-of-cost simulation, and returns metrics/trades/equity data.
+
+---
+
+## 2026-05-31 — Strategy backtesting enforces explicit signal-to-fill lag
+
+**Decision:** Add a strategy-oriented backtesting engine (`quant/backtesting/strategy_engine.py`) that runs `BaseStrategy` implementations with a strict timing contract: signals are generated from data up to bar `t`, then executed no earlier than bar `t + lag` (default one bar) at bar open.
+
+**Why:** The project direction is shifting from ad-hoc indicator-rule testing toward reusable strategy classes. Enforcing execution lag at the engine level prevents same-bar fill bias and reduces accidental look-ahead assumptions in strategy code.
+
+**Implementation detail:** Engine tracks cash/positions/trades/equity, applies `CostModel` on entry and exit, and computes core net-of-cost metrics. First baseline strategy added: EMA crossover under `quant/strategies/ema_crossover.py`.
+
+---
+
+## 2026-05-31 — Crypto ML research foundation prioritized over live execution
+
+**Decision:** Implement foundational research modules first: multi-asset backtesting, validation splits, statistical helpers, universe filtering, allocation sizing, and execution-readiness gates before exchange live trading or Gemini reviews.
+
+**Why:** The user's repo direction is now a rigorous small/mid-cap crypto ML portfolio research platform. The highest-risk failure mode is not coding difficulty; it is false confidence from leakage, overfitting, weak universe selection, or unsafe sizing. These foundations make future strategy results harder to fool.
+
+**Implementation detail:** Initial production-facing surface is intentionally narrow: an EMA baseline strategy API/UI report. More complex ML and Gemini report generation should consume structured artifacts from these modules rather than bypass them.
+
+---
+
+## 2026-05-31 — Gemini is the first LLM reviewer provider
+
+**Decision:** Use Gemini through the current `google-genai` Python SDK as the first LLM reviewer provider, behind a small reviewer interface.
+
+**Why:** The user wants Gemini for backtest report review. Keeping it behind `LlmReviewer` lets the platform switch or add providers later without changing research artifacts or strategy code.
+
+**Implementation detail:** API keys are read from `GEMINI_API_KEY` in local `.env`; committed files only contain placeholders. The reviewer accepts structured `BacktestReviewArtifact` inputs and is explicitly report-only, never a signal generator.
+
+---
+
+## 2026-05-31 — Perplexity is used for current research summaries
+
+**Decision:** Add Perplexity as the first current-web research provider using its bearer-token chat completions API.
+
+**Why:** Gemini is used for reviewing structured backtest artifacts. Perplexity is better suited for current market/research summaries because it returns web-grounded answers with citations. Keeping the roles separate reduces the chance that external research text becomes an unvetted trading signal.
+
+**Implementation detail:** `PerplexityResearcher` calls `https://api.perplexity.ai/chat/completions` with a configured Sonar model. API keys are read from `PERPLEXITY_API_KEY`; committed files only contain placeholders.

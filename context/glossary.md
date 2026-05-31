@@ -49,11 +49,38 @@ The stream of order book updates and executed trades on a venue. In crypto, orde
 ## Out-of-Sample (OOS)
 Data that was held back from strategy development/optimization and used only for validation. A strategy that performs well in-sample but poorly out-of-sample is likely overfit.
 
+## Final Holdout
+The final untouched test period reserved before strategy development. It should only be run after the strategy configuration is frozen. Repeatedly checking it turns it into another validation set.
+
 ## Overfitting
 When a strategy is tuned so precisely to historical data that it captures noise rather than signal. Symptoms: excellent backtest, poor live performance. Cure: fewer parameters, OOS validation, walk-forward testing.
 
 ## Paper Trading
 Simulated live trading using real market data and a paper (fake) account. The bridge between backtesting and real money. Required before any real capital commitment in this project.
+
+## Point-in-Time Universe
+A tradable universe built using only information available at the historical timestamp being tested. This avoids selecting today's survivors and accidentally introducing survivorship or look-ahead bias.
+
+## Purging
+Removing training samples whose label/event horizon overlaps a test fold. Used in financial ML because labels often depend on future price paths.
+
+## Embargoing
+Dropping a buffer of training samples immediately after a test fold to reduce serial-correlation leakage across the train/test boundary.
+
+## Probabilistic Sharpe Ratio
+A probability-style Sharpe significance estimate that accounts for sample size and non-normal return characteristics. Useful as an early robustness check.
+
+## Deflated Sharpe Ratio
+A stricter Sharpe significance adjustment that accounts for non-normal returns and multiple trials/selection bias. Intended to reduce false positives after testing many strategies or parameter sets.
+
+## White's Reality Check / Hansen SPA
+Multiple-testing/data-snooping tests that evaluate whether the best strategy from a searched family truly outperforms a benchmark. Relevant when many strategy variants were tried.
+
+## Cost-Adjusted EV
+Expected value after subtracting estimated transaction costs, spread, slippage, latency, and market impact. Signals should be sized or rejected based on cost-adjusted EV, not raw model confidence.
+
+## Regime
+A market state such as trend, chop, high volatility, low liquidity, or correlation compression. Strategy performance must be reported by regime because aggregate results can hide fragility.
 
 ## Sharpe Ratio
 (Return - Risk-free rate) / Standard deviation of returns. The most common risk-adjusted return measure. Higher is better. Generally: <1 poor, 1–2 acceptable, >2 good. Always compute on net-of-cost returns.
