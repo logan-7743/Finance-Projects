@@ -53,7 +53,13 @@ Progress note (2026-05-31):
 ### Phase 3 — Sentiment + Research
 - [ ] LLM sentiment integration (OpenAI or similar) on news/earnings
 - [x] Perplexity for automated research summaries
+- [x] Local Trump event corpus pull foundation (two-year trump.fm social posts + White House official transcripts/statements)
 - [ ] Sentiment signals as strategy inputs or filters
+
+Progress note (2026-05-31):
+- Added `quant/events/` with streaming JSONL storage, trump.fm social-post ingestion, White House sitemap/article ingestion, merge/coverage reporting, and a CLI pull entry point.
+- Pulled the current local corpus under `data/events/`: `9,840` merged events (`9,794` social posts, `46` White House records). No market labels or strategy logic yet.
+- Added `/api/events/trump` and `/events` so the corpus can be browsed with source/search/date filters before labeling work begins.
 
 ### Phase 4 — Crypto
 - [ ] Coinbase integration for crypto market data (candles, L2 book, market trades)

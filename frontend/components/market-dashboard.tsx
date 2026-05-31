@@ -5,6 +5,7 @@ import {
   BarChart3,
   Brain,
   CandlestickChart,
+  Database,
   Plus,
   Server,
   X,
@@ -606,6 +607,10 @@ export function MarketDashboard() {
           <Link className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-500" href="/research">
             <Activity className="h-4 w-4" />
             Research
+          </Link>
+          <Link className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-500" href="/events">
+            <Database className="h-4 w-4" />
+            Event Corpus
           </Link>
           <span className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-600">
             <Brain className="h-4 w-4" />

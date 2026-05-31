@@ -127,3 +127,13 @@ Cloud Run with a warm instance eliminates all of the above. GCP Cloud Scheduler 
 **Why:** Gemini is used for reviewing structured backtest artifacts. Perplexity is better suited for current market/research summaries because it returns web-grounded answers with citations. Keeping the roles separate reduces the chance that external research text becomes an unvetted trading signal.
 
 **Implementation detail:** `PerplexityResearcher` calls `https://api.perplexity.ai/chat/completions` with a configured Sonar model. API keys are read from `PERPLEXITY_API_KEY`; committed files only contain placeholders.
+
+---
+
+## 2026-05-31 — Trump event corpus starts as local JSONL with source manifests
+
+**Decision:** Store the initial Trump event corpus under `data/events/` as raw source files plus normalized JSONL until a database is needed.
+
+**Why:** The immediate need is to prove data acquisition for a two-year research window while keeping memory and operational overhead low. Streaming JSONL writes avoid holding the full corpus in memory and are easy to inspect, commit temporarily, and regenerate. A database becomes worthwhile later when the corpus needs annotation state, richer querying, or saved market-label experiments.
+
+**Implementation detail:** `quant/events/` owns event schemas, source clients, JSONL storage, reporting, and CLI pulls. `trump.fm` is the primary social source; White House sitemap/articles are the current official transcript source. Reposts are skipped by default.

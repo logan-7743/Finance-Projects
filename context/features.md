@@ -176,6 +176,31 @@ Shipped features, how they work, and their honest current status.
 
 ---
 
+## Trump Event Corpus Pull + Browser
+
+**Status:** Shipped (local pull foundation, no market labels yet)
+
+**What it does:** Pulls and displays a local two-year Trump event corpus for future event-study research. Current window is `2024-05-31` through `2026-05-31`.
+
+**How it works:**
+1. `quant/events/sources/trump_fm.py` paginates `https://trump.fm/api/posts`, writes raw page JSON under `data/events/raw/trump_fm/`, skips reposts by default, and streams normalized records into `data/events/normalized/trump_social.jsonl`.
+2. `quant/events/sources/whitehouse.py` reads the White House post sitemap, fetches official article HTML one file at a time under `data/events/raw/whitehouse/`, filters for Trump remarks/statements, and streams normalized transcript records into `data/events/normalized/trump_speeches.jsonl`.
+3. `quant/events/report.py` merges source JSONL files into `data/events/normalized/trump_events.jsonl` and reports counts by month/source without loading the full corpus into memory.
+4. `quant/events/pull.py` is the CLI entry point: `python -m quant.events.pull --source all`.
+5. `GET /api/events/trump` exposes a read-only paginated corpus browser with source, text, and date filters.
+6. Frontend route `/events` renders summary cards, monthly coverage, filters, pagination, and source-linked event cards.
+
+**Current local pull counts:** `9,840` merged events: `9,794` trump.fm social posts and `46` White House transcript/statement records. Raw data is committed under `data/events/` temporarily until this moves to a database.
+
+**Limitations (honest):**
+- No market reaction labels, ticker/entity extraction, or strategy logic is included yet.
+- trump.fm currently returned only `platform="truth"` records in this pull; X/Twitter coverage should be treated as unverified.
+- White House records are official transcripts/statements, not full rally/C-SPAN segment transcripts.
+- C-SPAN direct scraping was not included because requests from this environment hit WAF/empty `202` responses; revisit with a more robust source or authenticated/archive API if speech coverage needs to expand.
+- Local JSONL is acceptable for this first corpus size; move to a DB when incremental querying, annotation, or multi-run experiment history becomes necessary.
+
+---
+
 ## Research Dashboard UI
 
 **Status:** Shipped (v1 local research cockpit)

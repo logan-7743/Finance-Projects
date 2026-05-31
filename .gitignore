@@ -28,7 +28,9 @@ pnpm-debug.log*
 .vscode/
 
 # Data / generated artifacts
-data/
+data/*
+!data/events/
+!data/events/**
 reports/
 *.sqlite
 *.db

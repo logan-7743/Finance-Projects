@@ -1,0 +1,178 @@
+{
+  "since": "2024-05-31T09:06:02+00:00",
+  "until": "2026-05-31T13:58:28.701729+00:00",
+  "whitehouse": {
+    "source": "whitehouse",
+    "since": "2024-05-31T09:06:02+00:00",
+    "until": "2026-05-31T13:58:28.701729+00:00",
+    "listing_paths": [
+      "/remarks/",
+      "/briefings-statements/"
+    ],
+    "urls_discovered": 142,
+    "articles_fetched": 142,
+    "events_written": 45,
+    "skipped_out_of_window": 0,
+    "skipped_not_trump": 96,
+    "skipped_short_text": 0,
+    "duplicates_skipped": 1,
+    "failures": [],
+    "oldest_timestamp": "2025-01-20T19:00:12+00:00",
+    "newest_timestamp": "2025-08-05T19:20:10+00:00",
+    "output_path": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_speeches.jsonl"
+  },
+  "merge": {
+    "destination": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_events.jsonl",
+    "written": 9840,
+    "duplicates_skipped": 0,
+    "summary": {
+      "path": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_events.jsonl",
+      "exists": true,
+      "count": 9840,
+      "by_source": {
+        "trump_fm": 9794,
+        "whitehouse": 46
+      },
+      "by_month": {
+        "2024-05": 18,
+        "2024-06": 527,
+        "2024-07": 415,
+        "2024-08": 746,
+        "2024-09": 633,
+        "2024-10": 642,
+        "2024-11": 222,
+        "2024-12": 320,
+        "2025-01": 293,
+        "2025-02": 385,
+        "2025-03": 535,
+        "2025-04": 345,
+        "2025-05": 372,
+        "2025-06": 401,
+        "2025-07": 426,
+        "2025-08": 477,
+        "2025-09": 259,
+        "2025-10": 318,
+        "2025-11": 456,
+        "2025-12": 298,
+        "2026-01": 400,
+        "2026-02": 299,
+        "2026-03": 335,
+        "2026-04": 360,
+        "2026-05": 358
+      },
+      "oldest": "2024-05-31T12:03:31.500000+00:00",
+      "newest": "2026-05-31T05:08:48.410000+00:00"
+    }
+  },
+  "summaries": {
+    "social": {
+      "path": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_social.jsonl",
+      "exists": true,
+      "count": 9794,
+      "by_source": {
+        "trump_fm": 9794
+      },
+      "by_month": {
+        "2024-05": 18,
+        "2024-06": 527,
+        "2024-07": 415,
+        "2024-08": 746,
+        "2024-09": 633,
+        "2024-10": 642,
+        "2024-11": 222,
+        "2024-12": 320,
+        "2025-01": 280,
+        "2025-02": 373,
+        "2025-03": 528,
+        "2025-04": 342,
+        "2025-05": 368,
+        "2025-06": 400,
+        "2025-07": 422,
+        "2025-08": 475,
+        "2025-09": 259,
+        "2025-10": 318,
+        "2025-11": 456,
+        "2025-12": 298,
+        "2026-01": 400,
+        "2026-02": 299,
+        "2026-03": 335,
+        "2026-04": 360,
+        "2026-05": 358
+      },
+      "oldest": "2024-05-31T12:03:31.500000+00:00",
+      "newest": "2026-05-31T05:08:48.410000+00:00"
+    },
+    "speeches": {
+      "path": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_speeches.jsonl",
+      "exists": true,
+      "count": 46,
+      "by_source": {
+        "whitehouse": 46
+      },
+      "by_month": {
+        "2025-01": 13,
+        "2025-02": 12,
+        "2025-03": 7,
+        "2025-04": 3,
+        "2025-05": 4,
+        "2025-06": 1,
+        "2025-07": 4,
+        "2025-08": 2
+      },
+      "oldest": "2025-01-20T19:00:12+00:00",
+      "newest": "2025-08-05T19:20:10+00:00"
+    },
+    "merged": {
+      "path": "/Users/loganbishop/Documents/Trading Projects/data/events/normalized/trump_events.jsonl",
+      "exists": true,
+      "count": 9840,
+      "by_source": {
+        "trump_fm": 9794,
+        "whitehouse": 46
+      },
+      "by_month": {
+        "2024-05": 18,
+        "2024-06": 527,
+        "2024-07": 415,
+        "2024-08": 746,
+        "2024-09": 633,
+        "2024-10": 642,
+        "2024-11": 222,
+        "2024-12": 320,
+        "2025-01": 293,
+        "2025-02": 385,
+        "2025-03": 535,
+        "2025-04": 345,
+        "2025-05": 372,
+        "2025-06": 401,
+        "2025-07": 426,
+        "2025-08": 477,
+        "2025-09": 259,
+        "2025-10": 318,
+        "2025-11": 456,
+        "2025-12": 298,
+        "2026-01": 400,
+        "2026-02": 299,
+        "2026-03": 335,
+        "2026-04": 360,
+        "2026-05": 358
+      },
+      "oldest": "2024-05-31T12:03:31.500000+00:00",
+      "newest": "2026-05-31T05:08:48.410000+00:00"
+    }
+  },
+  "updated_at": "2026-05-31T14:02:00.147692+00:00",
+  "social_regenerated_from_raw_pages": {
+    "pages_read": 147,
+    "posts_seen": 14700,
+    "events_written": 9794,
+    "reposts_skipped": 1643,
+    "duplicates_skipped": 0,
+    "empty_text_skipped": 3254,
+    "platform_counts": {
+      "truth": 9794
+    },
+    "oldest_timestamp": "2024-05-31T12:03:31.500000+00:00",
+    "newest_timestamp": "2026-05-31T05:08:48.410000+00:00"
+  }
+}

@@ -111,6 +111,18 @@ include = ["app*", "quant*"]
 
 ---
 
+## 2026-05-31 — C-SPAN direct scraping was blocked during Trump speech pull
+
+**Symptom:** C-SPAN search/program URLs intermittently returned `403`, empty `202` responses, or WAF challenge pages from this environment. A direct C-SPAN speech-transcript batch pull was not reliable.
+
+**Root cause:** C-SPAN sits behind CloudFront/AWS WAF and serves challenge-protected pages to non-browser/scripted requests. Program/search pages also use dynamic frontend behavior, making simple HTTP scraping brittle.
+
+**Fix:** For the first local corpus, use White House official article pages via `post-sitemap.xml` as the speech/transcript source. The sitemap path is lightweight, stable enough for batch pulls, and avoids paginating heavy archive pages.
+
+**Dead ends (do not retry):** Do not depend on naive C-SPAN `curl`/HTML scraping for automated pulls. If C-SPAN coverage is required, use a more robust archive/API route or a dedicated scraper that can handle WAF, pagination, and transcript duplication.
+
+---
+
 ## Template
 
 ```
