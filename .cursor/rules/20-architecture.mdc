@@ -1,0 +1,51 @@
+---
+description: Monorepo layout, module boundaries, and where new features belong
+alwaysApply: false
+globs: **/*.py,**/*.ts,**/*.tsx
+---
+
+# Architecture & Module Layout
+
+## Repo Structure
+```
+/
+├── backend/              # Python — FastAPI + quant core
+│   ├── app/              # FastAPI application
+│   │   ├── main.py       # App entry point, CORS, lifespan
+│   │   └── routers/      # Route modules (market, strategies, etc.)
+│   ├── quant/            # Core quant library (importable package)
+│   │   ├── data/         # Market data sources and abstractions
+│   │   ├── strategies/   # Strategy base class + implementations
+│   │   ├── backtesting/  # Backtest engine
+│   │   ├── execution/    # Broker interfaces (Alpaca, paper, etc.)
+│   │   ├── risk/         # Cost models: fees, slippage, latency
+│   │   ├── metrics/      # Performance metrics (Sharpe, drawdown, etc.)
+│   │   └── sentiment/    # LLM/Perplexity sentiment integration
+│   └── pyproject.toml
+├── frontend/             # Next.js App Router + shadcn/ui
+│   ├── app/              # Pages and layouts
+│   ├── components/       # Reusable UI components
+│   └── lib/              # API client, utilities
+├── context/              # Living wiki — MUST be kept updated
+└── .cursor/rules/        # AI agent guidance — self-maintained
+```
+
+## Boundaries
+- **All quant math, data fetching, and order logic lives in `backend/quant/`.** Never put trading logic in API routers or frontend.
+- **API routers are thin** — validate inputs, call `quant/`, return shaped responses. No business logic.
+- **Frontend is display + interaction only.** No trading decisions. Calls `backend` via REST.
+- **New data sources** go in `quant/data/` implementing `MarketDataSource` base.
+- **New strategies** go in `quant/strategies/` implementing `BaseStrategy`.
+- **New broker integrations** go in `quant/execution/` implementing `BaseBroker`.
+
+## Local Development
+- Backend: `cd backend && uv run uvicorn app.main:app --reload` → `http://127.0.0.1:8000`
+- Frontend: `cd frontend && npm run dev` → `http://localhost:3000`
+- Frontend talks to backend via `NEXT_PUBLIC_API_URL=http://127.0.0.1:8000`
+
+## Production Targets (future — not built yet)
+- UI → Vercel
+- Engine + API → GCP Cloud Run (`min-instances=1`, always-warm)
+- Scheduler → GCP Cloud Scheduler
+- Logs → GCP Cloud Logging
+- DB → TBD (Neon Postgres or Cloud SQL), behind a thin interface

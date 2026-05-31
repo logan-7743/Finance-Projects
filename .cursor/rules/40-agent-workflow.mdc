@@ -1,0 +1,36 @@
+---
+description: How agents must work in this repo — maintain the context wiki and self-author rules
+alwaysApply: true
+---
+
+# Agent Workflow — Required Practices
+
+## At the Start of Every Non-Trivial Session
+1. Read `context/README.md` to understand the current state of the project.
+2. Read `context/goals-and-roadmap.md` to understand priorities.
+3. Check `context/issues-and-solutions.md` for known gotchas before diving in.
+
+## After Completing Any Non-Trivial Task
+Update the `context/` wiki before considering the task done:
+
+| What happened | Where to record it |
+|---|---|
+| A decision was made (tech choice, design trade-off) | `context/decisions.md` — include the date and *why* |
+| A problem was hit and solved | `context/issues-and-solutions.md` — include the symptom, root cause, and fix |
+| A feature was shipped | `context/features.md` — what it does, how it works, current status |
+| Progress toward a goal | `context/goals-and-roadmap.md` — mark completed milestones |
+| A new domain term came up | `context/glossary.md` |
+
+## Self-Authoring Rules
+When you discover something nuanced that future agents must know — a non-obvious constraint, a gotcha, a convention that isn't obvious from reading the code — **write a rule in `.cursor/rules/`** rather than letting the knowledge evaporate.
+
+- Create a new `.mdc` file if the topic is distinct and reusable.
+- Update an existing rule if the new info belongs with existing guidance.
+- Keep rules concise (under 50 lines of content). One concern per rule.
+- Use `alwaysApply: true` sparingly — only for rules that must always be visible.
+
+## What Not to Do
+- Do not skip the context update because "it was a small change." Small changes compound into lost context.
+- Do not invent strategies or produce fabricated backtest results. See `10-quant-rigor.mdc`.
+- Do not add trading logic to API routers or the frontend. See `20-architecture.mdc`.
+- Do not commit secrets or hardcoded credentials.

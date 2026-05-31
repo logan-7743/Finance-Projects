@@ -1,0 +1,26 @@
+---
+description: Project overview — what this repo is, the trading philosophy, and the north-star goals
+alwaysApply: true
+---
+
+# Quant Trading Platform — Overview
+
+This repo is a **professional quant trading platform** rebuilt from scratch, powered by modern tooling and disciplined methodology. It was originally a college hobby project; it is now being built properly.
+
+## What This Is
+- **One app, many algos.** A single platform housing multiple trading strategies that can be developed, tested, and run independently.
+- **Paper-first.** All new strategies run on Alpaca paper trading before any real capital is committed.
+- **Real money only after rigorous testing.** Capital is introduced in small increments after: out-of-sample validation, walk-forward testing, live paper performance review, and cost-adjusted profitability confirmation.
+- **Cloud-ready, local-first.** Development runs on localhost. Production target: Vercel (UI) + GCP Cloud Run (engine).
+
+## Asset Classes
+Equities (primary), crypto (Coinbase), potentially other instruments over time.
+
+## Data Sources
+- `yfinance` — historical OHLCV data
+- Alpaca — paper and live trading, real-time market data
+- Coinbase — crypto data
+- LLMs / Perplexity — sentiment and research augmentation
+
+## The Goal
+Build an analytical, honest, rigorous trading system — not a speculative toy. Every strategy must earn its place through math and evidence.

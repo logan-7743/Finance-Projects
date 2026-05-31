@@ -1,0 +1,44 @@
+---
+description: Quantitative rigor and honesty requirements — the non-negotiables for every strategy, backtest, and analysis
+alwaysApply: true
+---
+
+# Quantitative Rigor — Non-Negotiables
+
+## Be Honest. Always Tell the Truth.
+- Never fabricate results. Never flatter with cherry-picked metrics.
+- If a strategy underperforms, say so clearly. If assumptions are uncertain, say so.
+- The platform exists to surface truth, not to confirm what we want to hear.
+
+## The Four Costs That Kill Algorithms
+These must be modeled in **every** backtest and live simulation. Ignoring any one of them produces lies.
+
+1. **Slippage** — the difference between expected fill price and actual fill price. Model conservatively; assume adverse fills especially for larger sizes or illiquid instruments.
+2. **Transaction fees** — commissions, exchange fees, SEC fees. Even "commission-free" brokers have spread costs. Account for all of them.
+3. **Latency** — time between signal generation and order execution. Longer latency = worse fills, missed opportunities, increased slippage.
+4. **Alpha decay** — strategies degrade over time. A strategy that worked in 2020 may not work in 2024. Monitor live performance vs. backtest. Flag when decay is suspected.
+
+Also model: **market impact** (for larger orders), **bid-ask spread**, **overnight/weekend gaps**, **corporate events** (splits, dividends).
+
+## Backtest Requirements
+- All backtests must report **net-of-cost** results (after all four costs above).
+- State assumptions explicitly: data source, time period, cost model parameters.
+- Include **out-of-sample** validation — never optimize on the full dataset.
+- **Walk-forward testing** is expected for strategies with optimized parameters.
+- Report: Sharpe ratio, max drawdown, Calmar ratio, win rate, average trade, exposure. Not just total return.
+- Call out **look-ahead bias** risks and **survivorship bias** risks in the data used.
+
+## Strategy Development Principles
+- Build from rudimentary to modern: understand simple baselines (e.g., trend-following, mean reversion) before complex ML approaches.
+- Every signal needs a mathematical basis and an economic rationale — not just a curve-fit.
+- No overfitting. Penalize parameter count. Prefer simple, robust rules over complex, fragile ones.
+- A strategy that barely beats buy-and-hold after costs is not a good strategy.
+
+## What "Rigorous Testing" Means Before Real Money
+1. In-sample development + parameter optimization
+2. Out-of-sample validation (hold-out period)
+3. Walk-forward test across multiple market regimes
+4. Live paper trading for a meaningful duration (weeks to months)
+5. Cost-adjusted profitability confirmed in paper trading
+6. Risk limits defined before going live
+7. Capital starts small and scales only with continued confirmed performance

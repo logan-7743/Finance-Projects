@@ -1,0 +1,24 @@
+---
+description: Crypto market data conventions — candles, trades, order book, and order-flow caveats
+globs: **/*.py,**/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# Crypto Market Data
+
+Crypto support is expected, but **do not treat crypto data like `yfinance` stock candles**.
+
+## Preferred Starting APIs
+- **Coinbase Advanced Trade**: good US-friendly default. Public WebSocket supports `level2`, `market_trades`, `ticker`, and `candles`.
+- **Kraken WebSocket v2**: strong market-data API. Public L2 `book` channel supports depths 10/25/100/500/1000 with checksums; trade feed supports executed trades. L3/individual-order detail may require auth.
+
+## Order Flow Reality
+- “Order flow” is exchange-local unless using a paid aggregator (Kaiko, CoinAPI, CCData, etc.).
+- L2 order book = aggregated liquidity by price level. Useful for spread, depth, imbalance, and market impact.
+- Trades feed = executed transactions. Useful for aggressor flow and volume/imbalance features.
+- L3 order book = individual order-level data. More powerful, harder to maintain, often authenticated or paid.
+
+## Architecture
+- Add crypto providers under `backend/quant/data/` implementing the same data-source interfaces.
+- For live order book streams, use an always-on backend process (future Cloud Run), not Vercel/serverless.
+- Historical candles can be fetched over REST; live order book/trades should use WebSockets.

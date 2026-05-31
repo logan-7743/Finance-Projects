@@ -1,0 +1,60 @@
+---
+description: Python and TypeScript coding standards for this repo
+globs: **/*.py,**/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# Coding Standards
+
+## Python (backend + quant)
+- **Type annotations everywhere.** All function signatures must have type hints.
+- **Pydantic models** for all API request/response shapes.
+- **Linter: `ruff`** — run before committing. Config in `pyproject.toml`.
+- **Tests: `pytest`** — new quant logic must have tests. No untested strategies.
+- **No secrets in code.** All credentials/keys via environment variables; load with `python-dotenv` in dev. See `.env.example`.
+- **Reproducibility.** Set random seeds where applicable. Pin dependency versions.
+- Abstract base classes for all extensible interfaces (data sources, brokers, strategies).
+
+```python
+# ✅ GOOD — typed, pydantic response model
+from pydantic import BaseModel
+
+class OHLCVBar(BaseModel):
+    time: str
+    open: float
+    high: float
+    low: float
+    close: float
+    volume: float
+
+# ❌ BAD — untyped dict return
+def get_bars(symbol):
+    return {"data": [...]}
+```
+
+## TypeScript (frontend)
+- **Strict mode** (`"strict": true` in tsconfig).
+- **No `any`.** Use proper types or `unknown` with narrowing.
+- **App Router patterns** — server components where possible, `"use client"` only when needed (event handlers, browser APIs, charts).
+- **shadcn/ui** for all UI primitives — do not install competing component libraries.
+- **API calls only through `lib/api.ts`** — never raw `fetch` in components.
+
+```typescript
+// ✅ GOOD — typed API response
+interface OHLCVBar {
+  time: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+// ❌ BAD
+const data: any = await fetch('/api/...');
+```
+
+## General
+- No comments that narrate what the code does. Comments explain *why*, not *what*.
+- Keep functions small and single-purpose.
+- Never commit `.env` files — only `.env.example` with placeholder values.
